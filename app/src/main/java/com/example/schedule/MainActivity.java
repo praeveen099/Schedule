@@ -3,20 +3,21 @@ package com.example.schedule;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     // the text box that will hold the beginning time of the activity
-    TextView beginDateTxt;
-    private int currentYear, currentMonth, currentDay;
+    TextView beginDateTxt, activityStartTimeTxt, activityEndTime;
+    private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
     Button uploadButton;
 
     @Override
@@ -25,10 +26,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        beginDateTxt= findViewById(R.id.textView);
-        uploadButton = findViewById(R.id.button6);
+        // get the text views that we are going to use for the date and time dialogs
+        beginDateTxt= findViewById(R.id.dateToReschedule);
+        activityStartTimeTxt = findViewById(R.id.activityStartTime);
+        activityEndTime = findViewById(R.id.activityEndTime);
+        uploadButton = findViewById(R.id.uploadButton);
 
         beginDateTxt.setOnClickListener(this);
+        activityStartTimeTxt.setOnClickListener(this);
+        activityEndTime.setOnClickListener(this);
         uploadButton.setOnClickListener(this);
 
     }
@@ -57,6 +63,53 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         }
                     } , currentYear, currentMonth, currentDay);
             datePickerDialog.show();
+        }
+        if (v == activityStartTimeTxt)
+        {
+            // Get Current Time
+            final Calendar c = Calendar.getInstance();
+            currentHour = c.get(Calendar.HOUR_OF_DAY);
+            currentMinute = c.get(Calendar.MINUTE);
+
+            // Launch Time Picker Dialog
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                    new TimePickerDialog.OnTimeSetListener() {
+
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay,
+                                              int minute)
+                        {
+                            activityStartTimeTxt.setText(hourOfDay + ":" + minute );
+
+                        }
+            }, currentHour, currentMinute, false);
+
+            // show the time picker dialog
+            timePickerDialog.show();
+        }
+
+        if (v == activityEndTime)
+        {
+            // Get Current Time
+            final Calendar c = Calendar.getInstance();
+            currentHour = c.get(Calendar.HOUR_OF_DAY);
+            currentMinute = c.get(Calendar.MINUTE);
+
+            // Launch Time Picker Dialog
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                    new TimePickerDialog.OnTimeSetListener() {
+
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay,
+                                              int minute)
+                        {
+                            activityEndTime.setText(hourOfDay + ":" + minute );
+
+                        }
+                    }, currentHour, currentMinute, false);
+
+            // show the time picker dialog
+            timePickerDialog.show();
         }
 
 
