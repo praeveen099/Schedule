@@ -15,7 +15,7 @@ import java.util.Calendar;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     // the text box that will hold the beginning time of the activity
-    TextView beginTimeTxt;
+    TextView beginDateTxt;
     private int currentYear, currentMonth, currentDay;
     Button uploadButton;
 
@@ -25,9 +25,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        beginTimeTxt= findViewById(R.id.textView);
+        beginDateTxt= findViewById(R.id.textView);
         uploadButton = findViewById(R.id.button6);
 
+        beginDateTxt.setOnClickListener(this);
         uploadButton.setOnClickListener(this);
 
     }
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View v)
     {
-        if (v == beginTimeTxt)
+        if (v == beginDateTxt)
         {
             Calendar currentDateCalendar = Calendar.getInstance();
             // get the current date from calendar
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth)
                         {
-                            beginTimeTxt.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            beginDateTxt.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                         }
                     } , currentYear, currentMonth, currentDay);
             datePickerDialog.show();

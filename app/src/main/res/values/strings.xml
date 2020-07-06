@@ -3,4 +3,7 @@
     <string name="time_for_your_activity">Time for your activity</string>
     <string name="upload">Upload</string>
     <string name="enter_a_time">Enter a time:</string>
+    <string name="input_a_date">Input a date</string>
+    <string name="date_to_schedule">Date to schedule:</string>
+    <string name="click_to_set_a_date">Click to set a date</string>
 </resources>
