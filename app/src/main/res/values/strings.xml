@@ -10,4 +10,7 @@
     <string name="click_to_set_activity_start_time">Click to set activity start time</string>
     <string name="activity_end_time">Activity end time:</string>
     <string name="click_to_set_activity_end_time">Click to set activity end time</string>
+    <string name="activity_description">Activity description:</string>
+    <string name="activity_description_hint">Insert an activity description:</string>
+
 </resources>
