@@ -1,6 +1,7 @@
 package com.example.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -25,6 +26,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraintLayout);
+/*
+        TextView textView = new TextView(this);
+        textView.setText("the text");
+        ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        textView.setLayoutParams(textViewLayoutParams);
+        cl.addView(textView);
+*/
+
+
+
 
         // get the text views that we are going to use for the date and time dialogs
         beginDateTxt= findViewById(R.id.dateToReschedule);
