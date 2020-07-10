@@ -2,9 +2,12 @@ package com.example.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +17,8 @@ import android.widget.TimePicker;
 
 import java.util.Calendar;
 
+import static android.view.View.generateViewId;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     // the text box that will hold the beginning time of the activity
@@ -21,19 +26,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
     Button uploadButton;
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraintLayout);
-/*
-        TextView textView = new TextView(this);
-        textView.setText("the text");
-        ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        textView.setLayoutParams(textViewLayoutParams);
-        cl.addView(textView);
-*/
+
+
+
 
 
 
@@ -43,6 +44,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activityStartTimeTxt = findViewById(R.id.activityStartTime);
         activityEndTime = findViewById(R.id.activityEndTime);
         uploadButton = findViewById(R.id.uploadButton);
+
+
+
+
+        ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraintLayout);
+
+        // create the set of constraints
+        ConstraintSet c = new ConstraintSet();
+
+
+        TextView textView = new TextView(this);
+        textView.setText("the text");
+        // ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        // textView.setLayoutParams(textViewLayoutParams);
+        cl.addView(textView);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            textView.setId(generateViewId());
+        }
+        else
+            textView.setId(21);
+
+        // get the id of the view
+        int idOfTextView = textView.getId();
+        c.clone(cl);
+        c.connect(idOfTextView, ConstraintSet.TOP, uploadButton.getId(), ConstraintSet.BOTTOM, 0 );
+        c.connect(idOfTextView, ConstraintSet.RIGHT, uploadButton.getId(), ConstraintSet.LEFT, 20);
+        c.applyTo(cl);
 
         beginDateTxt.setOnClickListener(this);
         activityStartTimeTxt.setOnClickListener(this);
