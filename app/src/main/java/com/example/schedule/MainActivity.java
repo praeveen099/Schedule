@@ -1,8 +1,6 @@
 package com.example.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -10,8 +8,11 @@ import android.app.TimePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         uploadButton = findViewById(R.id.uploadButton);
 
 
-
+/*
 
         ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraintLayout);
 
@@ -72,6 +73,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         c.connect(idOfTextView, ConstraintSet.TOP, uploadButton.getId(), ConstraintSet.BOTTOM, 0 );
         c.connect(idOfTextView, ConstraintSet.RIGHT, uploadButton.getId(), ConstraintSet.LEFT, 20);
         c.applyTo(cl);
+*/
+
+
+         // get the linear layout
+        RelativeLayout relativeLayoutForActivityScrollView = findViewById(R.id.relativeLayoutToHoldActivities);
+        TextView textView = new TextView(this);
+        textView.setText("the text");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            textView.setId(generateViewId());
+        }
+        else
+            textView.setId(21);
+
+        ViewGroup.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        textView.setLayoutParams(params);
+        relativeLayoutForActivityScrollView.addView(textView);
+
+
 
         beginDateTxt.setOnClickListener(this);
         activityStartTimeTxt.setOnClickListener(this);
