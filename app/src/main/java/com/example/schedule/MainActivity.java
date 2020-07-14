@@ -51,10 +51,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         @SuppressLint("WrongViewCast")
-        ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraintLayoutToHoldActivities);
+        ConstraintLayout constraintLayoutToHoldActivities = (ConstraintLayout) findViewById(R.id.constraintLayoutToHoldActivities);
 
         // create the set of constraints
-        ConstraintSet c = new ConstraintSet();
+        ConstraintSet constraintSet = new ConstraintSet();
 
 
         TextView textView = new TextView(this);
@@ -69,14 +69,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         else
             textView.setId(21);
 
-        cl.addView(textView);
+        constraintLayoutToHoldActivities.addView(textView);
 
         // get the id of the view
         int idOfTextView = textView.getId();
-        c.clone(cl);
-        c.connect(idOfTextView, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0 );
-        c.connect(idOfTextView, ConstraintSet.RIGHT,  ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
-        c.applyTo(cl);
+        constraintSet.clone(constraintLayoutToHoldActivities);
+        constraintSet.connect(idOfTextView, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0 );
+        constraintSet.connect(idOfTextView, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
+        constraintSet.connect(idOfTextView, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+        constraintSet.applyTo(constraintLayoutToHoldActivities);
 
 
 
