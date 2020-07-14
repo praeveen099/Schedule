@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -48,48 +49,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         uploadButton = findViewById(R.id.uploadButton);
 
 
-
-
-        @SuppressLint("WrongViewCast")
-        ConstraintLayout constraintLayoutToHoldActivities = (ConstraintLayout) findViewById(R.id.constraintLayoutToHoldActivities);
-
-        // create the set of constraints
-        ConstraintSet constraintSet = new ConstraintSet();
-
-
-        TextView textView = new TextView(this);
-        textView.setText("the huhu text");
-        // ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-        // textView.setLayoutParams(textViewLayoutParams);
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            textView.setId(generateViewId());
-        }
-        else
-            textView.setId(21);
-
-        constraintLayoutToHoldActivities.addView(textView);
-
-        // get the id of the view
-        int idOfTextView = textView.getId();
-        constraintSet.clone(constraintLayoutToHoldActivities);
-        constraintSet.connect(idOfTextView, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0 );
-        constraintSet.connect(idOfTextView, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
-        constraintSet.connect(idOfTextView, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
-        constraintSet.applyTo(constraintLayoutToHoldActivities);
-
-
-
-//        ViewGroup.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        textView.setLayoutParams(params);
-
-
-
-
-
-
-
         beginDateTxt.setOnClickListener(this);
         activityStartTimeTxt.setOnClickListener(this);
         activityEndTime.setOnClickListener(this);
@@ -98,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     // override the current onClick method
+    @SuppressLint("ResourceType")
     @Override
     public void onClick(View v)
     {
@@ -118,9 +78,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                               int monthOfYear, int dayOfMonth)
                         {
                             beginDateTxt.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            // set the text area to have text which is black
+                            beginDateTxt.setTextColor(Color.parseColor("#000000"));
                         }
                     } , currentYear, currentMonth, currentDay);
             datePickerDialog.show();
+
         }
         if (v == activityStartTimeTxt)
         {
@@ -138,6 +101,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                               int minute)
                         {
                             activityStartTimeTxt.setText(hourOfDay + ":" + minute );
+                            // set the text area to have text which is black
+                            activityStartTimeTxt.setTextColor(Color.parseColor("#000000"));
 
                         }
             }, currentHour, currentMinute, false);
@@ -162,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                               int minute)
                         {
                             activityEndTime.setText(hourOfDay + ":" + minute );
+                            activityEndTime.setTextColor(Color.parseColor("#000000"));
 
                         }
                     }, currentHour, currentMinute, false);
@@ -169,6 +135,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // show the time picker dialog
             timePickerDialog.show();
         }
+        // when the upload data is pressed show the uploaded data
+        if(v == uploadButton)
+        {
+
+
+            @SuppressLint("WrongViewCast")
+            ConstraintLayout constraintLayoutToHoldActivities = (ConstraintLayout) findViewById(R.id.constraintLayoutToHoldActivities);
+
+            // create the set of constraints
+            ConstraintSet constraintSet = new ConstraintSet();
+
+
+            TextView textView = new TextView(this);
+            if(!((String) beginDateTxt.getText()).equals("Click to set a date"))
+            {
+                textView.setText((String) beginDateTxt.getText());
+                // ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+                // textView.setLayoutParams(textViewLayoutParams);
+
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    textView.setId(generateViewId());
+                }
+                else
+                    textView.setId(21);
+
+                constraintLayoutToHoldActivities.addView(textView);
+
+                // get the id of the view
+                int idOfTextView = textView.getId();
+                constraintSet.clone(constraintLayoutToHoldActivities);
+                constraintSet.connect(idOfTextView, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0 );
+                constraintSet.connect(idOfTextView, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
+                constraintSet.connect(idOfTextView, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+                constraintSet.applyTo(constraintLayoutToHoldActivities);
+            } // if the date is  set
+
+
+        } // if upload button is pressed
 
 
     }
