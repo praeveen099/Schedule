@@ -12,5 +12,6 @@
     <string name="click_to_set_activity_end_time">Click to set activity end time</string>
     <string name="activity_description">Activity description:</string>
     <string name="activity_description_hint">Insert an activity description:</string>
+    <string name="textview">TextView</string>
 
 </resources>

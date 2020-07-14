@@ -1,6 +1,8 @@
 package com.example.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -47,48 +48,44 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         uploadButton = findViewById(R.id.uploadButton);
 
 
-/*
 
-        ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraintLayout);
+
+        @SuppressLint("WrongViewCast")
+        ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.constraintLayoutToHoldActivities);
 
         // create the set of constraints
         ConstraintSet c = new ConstraintSet();
 
 
         TextView textView = new TextView(this);
-        textView.setText("the text");
+        textView.setText("the huhu text");
         // ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
         // textView.setLayoutParams(textViewLayoutParams);
-        cl.addView(textView);
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             textView.setId(generateViewId());
         }
         else
             textView.setId(21);
+
+        cl.addView(textView);
 
         // get the id of the view
         int idOfTextView = textView.getId();
         c.clone(cl);
-        c.connect(idOfTextView, ConstraintSet.TOP, uploadButton.getId(), ConstraintSet.BOTTOM, 0 );
-        c.connect(idOfTextView, ConstraintSet.RIGHT, uploadButton.getId(), ConstraintSet.LEFT, 20);
+        c.connect(idOfTextView, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0 );
+        c.connect(idOfTextView, ConstraintSet.RIGHT,  ConstraintSet.PARENT_ID, ConstraintSet.RIGHT, 0);
         c.applyTo(cl);
-*/
 
 
-         // get the linear layout
-        RelativeLayout relativeLayoutForActivityScrollView = findViewById(R.id.relativeLayoutToHoldActivities);
-        TextView textView = new TextView(this);
-        textView.setText("the text");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-            textView.setId(generateViewId());
-        }
-        else
-            textView.setId(21);
 
-        ViewGroup.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        textView.setLayoutParams(params);
-        relativeLayoutForActivityScrollView.addView(textView);
+//        ViewGroup.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//        textView.setLayoutParams(params);
+
+
+
+
 
 
 
