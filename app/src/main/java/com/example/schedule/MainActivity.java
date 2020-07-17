@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -25,7 +24,7 @@ import static android.view.View.generateViewId;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     // the text box that will hold the beginning time of the activity
-    TextView beginDateTxt, activityStartTimeTxt, activityEndTime;
+    TextView beginDateTxt, activityStartTimeTxt, activityEndTimeTxt;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
     Button uploadButton;
 
@@ -45,13 +44,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // get the text views that we are going to use for the date and time dialogs
         beginDateTxt= findViewById(R.id.dateToReschedule);
         activityStartTimeTxt = findViewById(R.id.activityStartTime);
-        activityEndTime = findViewById(R.id.activityEndTime);
+        activityEndTimeTxt = findViewById(R.id.activityEndTime);
         uploadButton = findViewById(R.id.uploadButton);
 
 
         beginDateTxt.setOnClickListener(this);
         activityStartTimeTxt.setOnClickListener(this);
-        activityEndTime.setOnClickListener(this);
+        activityEndTimeTxt.setOnClickListener(this);
         uploadButton.setOnClickListener(this);
 
     }
@@ -111,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             timePickerDialog.show();
         }
 
-        if (v == activityEndTime)
+        if (v == activityEndTimeTxt)
         {
             // Get Current Time
             final Calendar c = Calendar.getInstance();
@@ -126,8 +125,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onTimeSet(TimePicker view, int hourOfDay,
                                               int minute)
                         {
-                            activityEndTime.setText(hourOfDay + ":" + minute );
-                            activityEndTime.setTextColor(Color.parseColor("#000000"));
+                            activityEndTimeTxt.setText(hourOfDay + ":" + minute );
+                            activityEndTimeTxt.setTextColor(Color.parseColor("#000000"));
 
                         }
                     }, currentHour, currentMinute, false);
@@ -144,41 +143,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ConstraintLayout constraintLayoutToHoldActivities = findViewById(R.id.constraintLayoutToHoldActivities);
 
 
+
             // get the count of children views in the constraint layout
             int count = constraintLayoutToHoldActivities.getChildCount();
+            System.out.println(count);
 
-            // set the previous view before we pressed the upload button
-            View viewToBeRemoved;
-
-            // remove all the views in the layout before we clicked upload
-            for (int i = 0; i < count; i ++)
+            // if there are child elements
+            if (count> 0 )
             {
-                viewToBeRemoved = constraintLayoutToHoldActivities.getChildAt(i);
-                ((ViewGroup) viewToBeRemoved.getParent()).removeView(viewToBeRemoved);
+                // set the previous view before we pressed the upload button
+                View viewToBeRemoved;
+
+                // remove all the views in the layout before we clicked upload
+                for (int i = 0; i < count; i++) {
+                    viewToBeRemoved = constraintLayoutToHoldActivities.getChildAt(i);
+                    ((ViewGroup) viewToBeRemoved.getParent()).removeView(viewToBeRemoved);
+                }
             }
 
             // create the set of constraints
             ConstraintSet constraintSet = new ConstraintSet();
 
 
-            TextView textView = new TextView(this);
-            if(!(beginDateTxt.getText()).equals("Click to set a date"))
+            // create textViews for uploaded date, uploaded start time, end time and description
+            TextView uploadedStartTimeTextView =  new TextView(this);
+            TextView uploadedEndTimeTextView =  new TextView(this);
+            TextView uploadedDescrptionTextView =  new TextView(this);
+            TextView uploadDateTextView = new TextView(this);
+            if((!(beginDateTxt.getText()).equals("Click to set a date")) && (!(activityStartTimeTxt.getText()).equals("Click to set activity start time"))
+            && !(activityEndTimeTxt.getText()).equals("Click to set activity end time"))
             {
-                textView.setText(beginDateTxt.getText());
-                // ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
-                // textView.setLayoutParams(textViewLayoutParams);
+                uploadDateTextView.setText(beginDateTxt.getText());
 
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    textView.setId(generateViewId());
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+                {
+                    uploadedStartTimeTextView.setId(generateViewId());
+                    uploadedEndTimeTextView.setId(generateViewId());
+                    uploadedDescrptionTextView.setId(generateViewId());
+                    uploadDateTextView.setId(generateViewId());
+
                 }
-                else
-                    textView.setId(21);
-
-                constraintLayoutToHoldActivities.addView(textView);
+                else {
+                    uploadedStartTimeTextView.setId(25);
+                    uploadedEndTimeTextView.setId(24);
+                    uploadedDescrptionTextView.setId(23);
+                    uploadDateTextView.setId(21);
+                }
+                constraintLayoutToHoldActivities.addView(uploadDateTextView);
 
                 // get the id of the view
-                int idOfTextView = textView.getId();
+                int idOfTextView = uploadDateTextView.getId();
                 constraintSet.clone(constraintLayoutToHoldActivities);
                 constraintSet.connect(idOfTextView, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP, 0 );
                 constraintSet.connect(idOfTextView, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
