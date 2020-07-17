@@ -141,16 +141,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
             @SuppressLint("WrongViewCast")
-            ConstraintLayout constraintLayoutToHoldActivities = (ConstraintLayout) findViewById(R.id.constraintLayoutToHoldActivities);
+            ConstraintLayout constraintLayoutToHoldActivities = findViewById(R.id.constraintLayoutToHoldActivities);
+
+
+            // get the count of children views in the constraint layout
+            int count = constraintLayoutToHoldActivities.getChildCount();
+
+            // set the previous view before we pressed the upload button
+            View viewToBeRemoved;
+
+            // remove all the views in the layout before we clicked upload
+            for (int i = 0; i < count; i ++)
+            {
+                viewToBeRemoved = constraintLayoutToHoldActivities.getChildAt(i);
+                ((ViewGroup) viewToBeRemoved.getParent()).removeView(viewToBeRemoved);
+            }
 
             // create the set of constraints
             ConstraintSet constraintSet = new ConstraintSet();
 
 
             TextView textView = new TextView(this);
-            if(!((String) beginDateTxt.getText()).equals("Click to set a date"))
+            if(!(beginDateTxt.getText()).equals("Click to set a date"))
             {
-                textView.setText((String) beginDateTxt.getText());
+                textView.setText(beginDateTxt.getText());
                 // ConstraintLayout.LayoutParams textViewLayoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
                 // textView.setLayoutParams(textViewLayoutParams);
 
