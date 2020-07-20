@@ -25,9 +25,9 @@ import static android.view.View.generateViewId;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     // the text box that will hold the beginning time of the activity
-    TextView beginDateTxt, activityStartTimeTxt, activityEndTimeTxt;
+    TextView beginDateTxt, activityStartTimeTxt, activityEndTimeTxt, stringDate;
     EditText activityDescriptionTxt;
-    View divider;
+    View aboveDateDivider, belowDateDivider;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
     Button uploadButton;
 
@@ -51,10 +51,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activityDescriptionTxt = findViewById(R.id.activityDescription);
         uploadButton = findViewById(R.id.uploadButton);
 
-        // get the divider
-        divider = findViewById(R.id.divider);
+        // get the dividers
+        aboveDateDivider = findViewById(R.id.divider);
+        belowDateDivider = findViewById(R.id.divider2);
 
-
+        // an indicator to show the date
+        stringDate = findViewById(R.id.stringDate);
 
         beginDateTxt.setOnClickListener(this);
         activityStartTimeTxt.setOnClickListener(this);
@@ -179,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // remove all the views in the layout before we clicked upload except divider
                 for (int i = 0; i < count; i++) {
                     viewToBeRemoved = constraintLayoutToHoldActivities.getChildAt(i);
-                    if (!viewToBeRemoved.equals(divider))
+                    if (!(viewToBeRemoved.equals(aboveDateDivider) || viewToBeRemoved.equals(belowDateDivider) || viewToBeRemoved.equals(stringDate)))
                         ((ViewGroup) viewToBeRemoved.getParent()).removeView(viewToBeRemoved);
                 }
             }
@@ -201,10 +203,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             && !(activityEndTimeTxt.getText()).equals("Click to set activity end time") && !((activityDescriptionTxt.getText()).toString()).matches(""))
             {
 
-                // set divider to be visible
-                divider.setVisibility(View.VISIBLE);
+                // set divider and date strinf to be visible
+                aboveDateDivider.setVisibility(View.VISIBLE);
+                belowDateDivider.setVisibility(View.VISIBLE);
+                stringDate.setVisibility(View.VISIBLE);
+
+                // add the text and set some of the attributes
                 uploadDateTextView.setText(beginDateTxt.getText());
-                uploadDateTextView.setTextSize(14);
+                uploadDateTextView.setTextColor(Color.parseColor("#000000"));
 
 
                 // set the ids for all the text views we are going to create
