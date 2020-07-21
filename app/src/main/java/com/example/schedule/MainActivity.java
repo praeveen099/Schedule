@@ -179,22 +179,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 View viewToBeRemoved;
 
                 // remove all the views in the layout before we clicked upload except divider
-                for (int i = 0; i < count; i++) {
+                for (int i = count - 1; i >= 0 ; i--) {
                     viewToBeRemoved = constraintLayoutToHoldActivities.getChildAt(i);
-                    if (!(viewToBeRemoved.equals(aboveDateDivider) || viewToBeRemoved.equals(belowDateDivider) || viewToBeRemoved.equals(stringDate)))
-                        ((ViewGroup) viewToBeRemoved.getParent()).removeView(viewToBeRemoved);
+                        if (!(viewToBeRemoved.equals(aboveDateDivider) || viewToBeRemoved.equals(belowDateDivider) || viewToBeRemoved.equals(stringDate)))
+                            ((ViewGroup) viewToBeRemoved.getParent()).removeView(viewToBeRemoved);
                 }
             }
 
 
             // create the set of constraints
             ConstraintSet constraintSet = new ConstraintSet();
+            ConstraintSet constraintSet2 = new ConstraintSet();
 
 
             // create textViews for uploaded date, uploaded start time, end time and description
             // to be put at the display to hold activities
-            TextView uploadedStartTimeTextView =  new TextView(this);
-            TextView uploadedEndTimeTextView =  new TextView(this);
+            TextView uploadedStartEndTimeTextView =  new TextView(this);
             TextView uploadedDescriptionTextView =  new TextView(this);
             TextView uploadDateTextView = new TextView(this);
 
@@ -212,33 +212,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 uploadDateTextView.setText(beginDateTxt.getText());
                 uploadDateTextView.setTextColor(Color.parseColor("#000000"));
 
+                // the time to display from what to what time the activity is
+                String timeFromAndUntilActivity = activityStartTimeTxt.getText() + " - " + activityEndTimeTxt.getText();
+                uploadedStartEndTimeTextView.setText(timeFromAndUntilActivity);
+                uploadedStartEndTimeTextView.setTextColor(Color.parseColor("#000000"));
+
+
 
                 // set the ids for all the text views we are going to create
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
                 {
-                    uploadedStartTimeTextView.setId(generateViewId());
-                    uploadedEndTimeTextView.setId(generateViewId());
+                    uploadedStartEndTimeTextView.setId(generateViewId());
                     uploadedDescriptionTextView.setId(generateViewId());
                     uploadDateTextView.setId(generateViewId());
 
                 }
                 else {
-                    uploadedStartTimeTextView.setId(25);
-                    uploadedEndTimeTextView.setId(24);
+                    uploadedStartEndTimeTextView.setId(25);
                     uploadedDescriptionTextView.setId(23);
                     uploadDateTextView.setId(21);
                 }
 
                 // add the views to the constraint layout
                 constraintLayoutToHoldActivities.addView(uploadDateTextView);
+                constraintLayoutToHoldActivities.addView(uploadedStartEndTimeTextView);
 
 
-                // get the id of the view
-                int idOfTextView = uploadDateTextView.getId();
+                // get the id of the view for the uploaded date
+                int idOfUploadedDateTextView = uploadDateTextView.getId();
                 constraintSet.clone(constraintLayoutToHoldActivities);
-                constraintSet.connect(idOfTextView, ConstraintSet.TOP, R.id.divider, ConstraintSet.TOP, 0 );
-                constraintSet.connect(idOfTextView, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
-                constraintSet.connect(idOfTextView, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+                constraintSet.connect(idOfUploadedDateTextView, ConstraintSet.TOP, R.id.divider, ConstraintSet.TOP, 0 );
+                constraintSet.connect(idOfUploadedDateTextView, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
+                constraintSet.connect(idOfUploadedDateTextView, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+
+
+                // get the id of the view for the uploaded start to end time
+                int idOfUploadedStartEndTimeTextView = uploadedStartEndTimeTextView.getId();
+                constraintSet.connect(idOfUploadedStartEndTimeTextView, ConstraintSet.TOP, R.id.divider2, ConstraintSet.TOP, 0);
+                constraintSet.connect(idOfUploadedStartEndTimeTextView, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
+                constraintSet.connect(idOfUploadedStartEndTimeTextView, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+
                 constraintSet.applyTo(constraintLayoutToHoldActivities);
             } // if the entries are all set
 
