@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText activityDescriptionTxt;
     View aboveDateDivider, belowDateDivider;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
-    Button uploadButton;
+    Button uploadButton, confirmButton;
 
     @SuppressLint("ResourceType")
     @Override
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activityEndTimeTxt = findViewById(R.id.activityEndTime);
         activityDescriptionTxt = findViewById(R.id.activityDescription);
         uploadButton = findViewById(R.id.uploadButton);
+        confirmButton = findViewById(R.id.confirmButton);
 
         // get the dividers
         aboveDateDivider = findViewById(R.id.divider);
@@ -214,6 +215,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 aboveDateDivider.setVisibility(View.VISIBLE);
                 belowDateDivider.setVisibility(View.VISIBLE);
                 stringDate.setVisibility(View.VISIBLE);
+                confirmButton.setVisibility(View.VISIBLE);
 
                 // add the text and set some of the attributes
                 uploadDateTextView.setText(beginDateTxt.getText());
