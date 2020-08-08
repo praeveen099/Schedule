@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText activityDescriptionTxt;
     View aboveDateDivider, belowDateDivider;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
-    Button uploadButton, confirmButton;
+    Button uploadButton, confirmButton, cancelButton;
 
     @SuppressLint("ResourceType")
     @Override
@@ -52,8 +52,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         activityStartTimeTxt = findViewById(R.id.activityStartTime);
         activityEndTimeTxt = findViewById(R.id.activityEndTime);
         activityDescriptionTxt = findViewById(R.id.activityDescription);
+        // buttons we are going to use
         uploadButton = findViewById(R.id.uploadButton);
         confirmButton = findViewById(R.id.confirmButton);
+        cancelButton = findViewById(R.id.cancelButton);
 
         // get the dividers
         aboveDateDivider = findViewById(R.id.divider);
@@ -163,6 +165,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // show the time picker dialog
             timePickerDialog.show();
         }
+//        if(v == confirmButton)
+//        {
+//            System.out.println("2222222222222");
+//            System.out.println("hhe");
+//        }
         // when the upload data is pressed show the uploaded data
         if(v == uploadButton)
         {
@@ -211,11 +218,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             && !(activityEndTimeTxt.getText()).equals("Click to set activity end time") && !((activityDescriptionTxt.getText()).toString()).matches(""))
             {
 
-                // set divider and date string to be visible
+                // set divider and date string and buttons to be visible
                 aboveDateDivider.setVisibility(View.VISIBLE);
                 belowDateDivider.setVisibility(View.VISIBLE);
                 stringDate.setVisibility(View.VISIBLE);
                 confirmButton.setVisibility(View.VISIBLE);
+                cancelButton.setVisibility(View.VISIBLE);
 
                 // add the text and set some of the attributes
                 uploadDateTextView.setText(beginDateTxt.getText());
