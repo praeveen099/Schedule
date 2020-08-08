@@ -165,11 +165,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // show the time picker dialog
             timePickerDialog.show();
         }
-//        if(v == confirmButton)
-//        {
-//            System.out.println("2222222222222");
-//            System.out.println("hhe");
-//        }
+       if(v == cancelButton)
+       {
+
+           @SuppressLint("WrongViewCast")
+           ConstraintLayout constraintLayoutToHoldActivities = findViewById(R.id.constraintLayoutToHoldActivities);
+
+           // set divider and date string and buttons to be invisible
+           cancelButton.setVisibility(View.INVISIBLE);
+           confirmButton.setVisibility(View.INVISIBLE);
+           aboveDateDivider.setVisibility(View.INVISIBLE);
+           belowDateDivider.setVisibility(View.INVISIBLE);
+           stringDate.setVisibility(View.INVISIBLE);
+
+           // remove the views in the constraint layout that we dont want anymore
+           removeViews(constraintLayoutToHoldActivities);
+       }
         // when the upload data is pressed show the uploaded data
         if(v == uploadButton)
         {
@@ -178,24 +189,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @SuppressLint("WrongViewCast")
             ConstraintLayout constraintLayoutToHoldActivities = findViewById(R.id.constraintLayoutToHoldActivities);
 
-
-
-            // get the count of children views in the constraint layout
-            int count = constraintLayoutToHoldActivities.getChildCount();
-
-            // if there are child elements
-            if (count> 0 )
-            {
-                // set the previous view before we pressed the upload button
-                View viewToBeRemoved;
-
-                // remove all the views in the layout before we clicked upload except divider
-                for (int i = count - 1; i >= 0 ; i--) {
-                    viewToBeRemoved = constraintLayoutToHoldActivities.getChildAt(i);
-                        if (!(viewToBeRemoved.equals(aboveDateDivider) || viewToBeRemoved.equals(belowDateDivider) || viewToBeRemoved.equals(stringDate)))
-                            ((ViewGroup) viewToBeRemoved.getParent()).removeView(viewToBeRemoved);
-                }
-            }
+            // remove the views in the constraint layout that we dont want anymore
+            removeViews(constraintLayoutToHoldActivities);
 
 
             // create the set of constraints
@@ -318,5 +313,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } // if upload button is pressed
 
 
-    }
+    } // onClick
+
+    public void removeViews(ConstraintLayout constraintLayoutWhereViewsWillBeRemovedFrom)
+    {
+
+        // get the count of children views in the constraint layout
+        int count = constraintLayoutWhereViewsWillBeRemovedFrom.getChildCount();
+
+        // if there are child elements
+        if (count> 0 )
+        {
+            // set the previous view before we pressed the upload button
+            View viewToBeRemoved;
+
+            // remove all the views in the layout before we clicked upload except divider
+            for (int i = count - 1; i >= 0 ; i--) {
+                viewToBeRemoved = constraintLayoutWhereViewsWillBeRemovedFrom.getChildAt(i);
+                if (!(viewToBeRemoved.equals(aboveDateDivider) || viewToBeRemoved.equals(belowDateDivider) || viewToBeRemoved.equals(stringDate)))
+                    ((ViewGroup) viewToBeRemoved.getParent()).removeView(viewToBeRemoved);
+            }
+        }
+
+    } // removeViews
 }
