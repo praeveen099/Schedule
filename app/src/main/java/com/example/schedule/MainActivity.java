@@ -7,6 +7,7 @@ import androidx.constraintlayout.widget.ConstraintSet;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -27,6 +28,8 @@ import static android.view.View.generateViewId;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
+    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+
     // the text box that will hold the beginning time of the activity
     TextView beginDateTxt, activityStartTimeTxt, activityEndTimeTxt, stringDate;
     EditText activityDescriptionTxt;
@@ -251,12 +254,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     
 
                 }
-                else {
+                else
+                {
+
                     uploadedStartEndTimeTextView.setId(25);
                     uploadedDescriptionTextView.setId(23);
                     uploadDateTextView.setId(21);
                     dividerBelowTheActivityDescription.setId(27);
-
                 }
 
 
@@ -311,6 +315,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         } // if upload button is pressed
+        if (v == confirmButton)
+        {
+            Intent intent = new Intent(this, DisplayScheduleActivity.class);
+            // next bit is for testing purposes
+            String message= activityDescriptionTxt.getText().toString();
+            intent.putExtra(EXTRA_MESSAGE, message);
+            startActivity(intent);
+
+
+        }
+        //
 
 
     } // onClick
