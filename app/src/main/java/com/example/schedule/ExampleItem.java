@@ -1,17 +1,19 @@
 package com.example.schedule;
 
 public class ExampleItem {
-    private String mText1;
-    private String mText2;
-    public ExampleItem(String text1, String text2) {
-        mText1 = text1;
-        mText2 = text2;
+
+    private String day;
+    private String date;
+
+    public ExampleItem(String requiredDay, String requiredDate) {
+        day = requiredDay;
+        date = requiredDate;
     }
-    public String getText1() {
-        return mText1;
+    public String getDayFromTextView() {
+        return day;
     }
-    public String getText2() {
-        return mText2;
+    public String getDateFromTextView() {
+        return date;
     }
 }
 

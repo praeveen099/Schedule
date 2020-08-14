@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth)
                         {
-                            beginDateTxt.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                            beginDateTxt.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                             // set the text area to have text which is black
                             beginDateTxt.setTextColor(Color.parseColor("#000000"));
                         }

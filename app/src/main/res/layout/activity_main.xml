@@ -8,7 +8,7 @@
     >
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/Date"
         android:layout_width="153dp"
         android:layout_height="23dp"
         android:layout_marginStart="16dp"
@@ -18,7 +18,7 @@
         android:textSize="14sp"
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/Day" />
 
     <TextView
         android:id="@+id/dateToReschedule"
@@ -59,7 +59,7 @@
         android:onClick="onClick"
         android:text="@string/click_to_set_activity_end_time"
         android:textSize="14sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView"
+        app:layout_constraintBaseline_toBaselineOf="@+id/Day"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
@@ -76,7 +76,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/Day"
         android:layout_width="153dp"
         android:layout_height="23dp"
         android:layout_marginStart="16dp"
