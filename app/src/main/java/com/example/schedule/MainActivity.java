@@ -28,14 +28,14 @@ import static android.view.View.generateViewId;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+    // public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
     // the text box that will hold the beginning time of the activity
     TextView beginDateTxt, activityStartTimeTxt, activityEndTimeTxt, stringDate;
     EditText activityDescriptionTxt;
     View aboveDateDivider, belowDateDivider;
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
-    Button uploadButton, confirmButton, cancelButton;
+    Button uploadButton, confirmButton, cancelButton, calendarButton;
 
     @SuppressLint("ResourceType")
     @Override
@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         uploadButton = findViewById(R.id.uploadButton);
         confirmButton = findViewById(R.id.confirmButton);
         cancelButton = findViewById(R.id.cancelButton);
+        calendarButton = findViewById(R.id.calendarButton);
 
         // get the dividers
         aboveDateDivider = findViewById(R.id.divider);
@@ -315,18 +316,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         } // if upload button is pressed
-        if (v == confirmButton)
+        if (v == calendarButton)
         {
             Intent intent = new Intent(this, DisplayScheduleActivity.class);
             // next bit is for testing purposes
-            String message= activityDescriptionTxt.getText().toString();
-            intent.putExtra(EXTRA_MESSAGE, message);
+            // String message= activityDescriptionTxt.getText().toString();
+            // intent.putExtra(EXTRA_MESSAGE, message);
             startActivity(intent);
 
 
-        }
-        //
-
+        } // calendar button
 
     } // onClick
 
