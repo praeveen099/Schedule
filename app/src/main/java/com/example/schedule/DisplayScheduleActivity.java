@@ -26,6 +26,9 @@ public class DisplayScheduleActivity extends AppCompatActivity {
     // an array list that contains the 7 days and dates after today
     ArrayList<DayAndDate> listOfDayAndDate = new ArrayList<>();
 
+    // key to the message that we will receive in the new activity
+    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -94,6 +97,16 @@ public class DisplayScheduleActivity extends AppCompatActivity {
 
     }
 
+    // create a new activity with the schedule from this day
+    public void createAScheduleForSpecificDate(String date)
+    {
+        Intent intent = new Intent(this, ScheduleForASpecificDateActivity.class);
+        // pass the date string
+        intent.putExtra(EXTRA_MESSAGE, date);
+        startActivity(intent);
+
+    }
+
     public void buildRecyclerView()
     {
         // initialise the recycler view, layout manager and the adapters
@@ -112,8 +125,11 @@ public class DisplayScheduleActivity extends AppCompatActivity {
             @Override
             public void onItemClick(int position)
             {
-                listOfDayAndDate.get(position).changeDay("clicked");
-                mAdapter.notifyItemChanged(position);
+
+                String dateoOfClickedCard = listOfDayAndDate.get(position).getDateFromTextView();
+                createAScheduleForSpecificDate(dateoOfClickedCard);
+
+
             }
         });
 
