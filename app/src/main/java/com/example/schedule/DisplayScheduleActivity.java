@@ -19,9 +19,12 @@ public class DisplayScheduleActivity extends AppCompatActivity {
     // recycler view we use
     private RecyclerView mRecyclerView;
     // the bridge between recycler view and the data
-    private RecyclerView.Adapter mAdapter;
+    private ExampleAdapter mAdapter;
     // aligns the single items in the list
     private RecyclerView.LayoutManager mLayoutManager;
+
+    // an array list that contains the 7 days and dates after today
+    ArrayList<DayAndDate> listOfDayAndDate = new ArrayList<>();
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -35,9 +38,15 @@ public class DisplayScheduleActivity extends AppCompatActivity {
         Intent intent = getIntent();
         // String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
-        // an array list that contains the 7 days and dates after today
-        ArrayList<ExampleItem> listOfDayAndDate = new ArrayList<>();
 
+        createListOfDayAndDate();
+
+        buildRecyclerView();
+
+    }
+
+    public void createListOfDayAndDate()
+    {
         // format for the days and date
         SimpleDateFormat formatForDate = new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatForDay = new SimpleDateFormat("EEEE");
@@ -62,8 +71,8 @@ public class DisplayScheduleActivity extends AppCompatActivity {
         String yesterday = formatForDay.format(oneDateBefore);
 
         // Add yesterday and today into listOfDayAndDate array lists
-        listOfDayAndDate.add(new ExampleItem(yesterday, oneDateBeforeString));
-        listOfDayAndDate.add(new ExampleItem(todayDay, todayDateString));
+        listOfDayAndDate.add(new DayAndDate(yesterday, oneDateBeforeString));
+        listOfDayAndDate.add(new DayAndDate(todayDay, todayDateString));
 
         // for loop to add the next five days after today into the array list
         for (int daysAfterToday = 1; daysAfterToday <= 5; daysAfterToday++)
@@ -79,11 +88,14 @@ public class DisplayScheduleActivity extends AppCompatActivity {
             // get the day string
             String dayToAdd = formatForDay.format(dateToAddToList);
 
-            listOfDayAndDate.add(new ExampleItem(dayToAdd, dateToAddListString));
+            listOfDayAndDate.add(new DayAndDate(dayToAdd, dateToAddListString));
 
         } // for loop
 
+    }
 
+    public void buildRecyclerView()
+    {
         // initialise the recycler view, layout manager and the adapters
         mRecyclerView = findViewById(R.id.recyclerViewToHoldDateAndDays);
         // recycler view won't change size
@@ -95,9 +107,15 @@ public class DisplayScheduleActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setAdapter(mAdapter);
 
-
-
-
+        mAdapter.setOnItemClickListener(new ExampleAdapter.OnItemClickListener() {
+            // we implement the on item click method
+            @Override
+            public void onItemClick(int position)
+            {
+                listOfDayAndDate.get(position).changeDay("clicked");
+                mAdapter.notifyItemChanged(position);
+            }
+        });
 
     }
 }

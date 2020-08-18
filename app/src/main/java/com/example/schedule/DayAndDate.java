@@ -1,14 +1,20 @@
 package com.example.schedule;
 
-public class ExampleItem {
+public class DayAndDate {
 
     private String day;
     private String date;
 
-    public ExampleItem(String requiredDay, String requiredDate) {
+    public DayAndDate(String requiredDay, String requiredDate) {
         day = requiredDay;
         date = requiredDate;
     }
+
+    public void changeDay(String text) {
+        day = text;
+    }
+
+
     public String getDayFromTextView() {
         return day;
     }
