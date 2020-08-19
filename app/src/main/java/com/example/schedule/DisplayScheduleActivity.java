@@ -126,8 +126,8 @@ public class DisplayScheduleActivity extends AppCompatActivity {
             public void onItemClick(int position)
             {
 
-                String dateoOfClickedCard = listOfDayAndDate.get(position).getDateFromTextView();
-                createAScheduleForSpecificDate(dateoOfClickedCard);
+                String dateOfClickedCard = listOfDayAndDate.get(position).getDateFromTextView();
+                createAScheduleForSpecificDate(dateOfClickedCard);
 
 
             }
