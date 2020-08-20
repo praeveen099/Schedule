@@ -1,6 +1,7 @@
 package com.example.schedule;
 
-public class AnActivity {
+public class AnActivity implements Comparable<AnActivity>
+{
 
     // the properties of an activity
     private String activityDescription;
@@ -33,6 +34,16 @@ public class AnActivity {
 
     } // createTheIndex
 
+    @Override
+    public int compareTo(AnActivity otherActivity)
+    {
+        return Double.compare(this.getStartEndTimeToBeUsedForIndexing(), otherActivity.getStartEndTimeToBeUsedForIndexing());
+    } // compareTo
+
+    @Override
+    public String toString() {
+        return "AnActivity [activityDescription=" + activityDescription + ", startTime=" + startTime + ", endTime=" + endTime + ", startEndTimeToBeUsedForIndexing=" + startEndTimeToBeUsedForIndexing + "]";
+    }
 
     public String getActivityDescription() {
         return activityDescription;
