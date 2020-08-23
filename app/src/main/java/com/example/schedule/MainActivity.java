@@ -23,8 +23,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.Gson;
+
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+
 
 import static android.view.View.generateViewId;
 
@@ -203,17 +216,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             ConstraintSet constraintSet = new ConstraintSet();
 
 
-            // create textViews for uploaded date, uploaded start time, end time and description
-            // to be put at the display to hold activities
-            TextView uploadedStartEndTimeTextView =  new TextView(this);
-            TextView uploadedDescriptionTextView =  new TextView(this);
-            TextView uploadDateTextView = new TextView(this);
-
-
-            // the divider that will be added to the bottom of the time
-             View dividerBelowTheActivityDescription = new View(this);
-
-
             if((!(beginDateTxt.getText()).equals("Click to set a date")) && (!(activityStartTimeTxt.getText()).equals("Click to set activity start time"))
             && !(activityEndTimeTxt.getText()).equals("Click to set activity end time") && !((activityDescriptionTxt.getText()).toString()).matches(""))
             {
@@ -232,6 +234,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String startTime = activityStartTimeTxt.getText().toString();
                 String endTime = activityEndTimeTxt.getText().toString();
 
+                String dateUploadedText = beginDateTxt.getText().toString();
+
                 // get the text from the description of activity
                 String uploadedActivityDescription = activityDescriptionTxt.getText().toString();
 
@@ -245,6 +249,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (fileContainingHashMap.isFile() && fileContainingHashMap.canRead())
                 {
                     System.out.println("File exists");
+                    // get the hashMap
+                    HashMap<String, ArrayList<AnActivity>> hashMapOfDates = loadHashMapFromFile();
+
+                    // get the array list from the hashMap
+                    ArrayList<AnActivity> arrayListOfTheDate;
+                    arrayListOfTheDate = hashMapOfDates.get(dateUploadedText);
+
+                    // add an entry of the date to the array list
+                    if (arrayListOfTheDate == null)
+                    {
+                        ArrayList<AnActivity> arrayListToAdd = new ArrayList();
+                        hashMapOfDates.put(dateUploadedText, arrayListToAdd);
+
+                        // then reassign the array list of the date
+                        arrayListOfTheDate = hashMapOfDates.get(dateUploadedText);
+                    } // if
+
+                    // if nothing has been added to the array list of that date, then just show the
+                    // activities to be added
+                    if(arrayListOfTheDate.isEmpty())
+                        createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList(constraintLayoutToHoldActivities, timeFromAndUntilActivity);
+                    // TO DO  else
+
+
+
+                    
                 }
                 else
                 {
@@ -391,8 +421,56 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         constraintSet.applyTo(constraintLayoutToAddViews);
 
-
-
-
     } // createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList
+
+    public HashMap<String, ArrayList<AnActivity>> loadHashMapFromFile()
+    {
+        // initialise the file input stream
+        FileInputStream fis = null;
+
+        // to save the json holding the hashMap
+        String toSave = "";
+        String toGetFromFile;
+
+        try
+        {
+            // open the file
+            fis = openFileInput(FILE_NAME);
+
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            // create the string builder
+            StringBuilder sb = new StringBuilder();
+
+            while ((toGetFromFile = br.readLine()) != null) {
+                toSave = toGetFromFile;
+                sb.append(toGetFromFile).append("\n");
+                System.out.println(toGetFromFile);
+            }
+            br.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            if (fis != null)
+            {
+                try {
+                    fis.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } // if fis ! = null
+        } // finally
+
+        // get the hashMap from the json
+        Gson gson = new Gson();
+        Type type = new TypeToken<HashMap<String, ArrayList<AnActivity>>>(){}.getType();
+        HashMap<String, ArrayList<AnActivity>> hashMapOfActivities = gson.fromJson(toSave, type);
+
+        return  hashMapOfActivities;
+    }
 }
