@@ -5,6 +5,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.io.File;
 import java.util.Calendar;
 
 import static android.view.View.generateViewId;
@@ -30,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 {
     // public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
+    // the file name  that will store the HashMap of activities
+    public static final String FILE_NAME = "schedules.txt";
+
     // the text box that will hold the beginning time of the activity
     TextView beginDateTxt, activityStartTimeTxt, activityEndTimeTxt, stringDate;
     EditText activityDescriptionTxt;
@@ -37,18 +42,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int currentYear, currentMonth, currentDay, currentHour, currentMinute;
     Button uploadButton, confirmButton, cancelButton, calendarButton;
 
+    // an activity to be added when the confirm button is pressed
+    AnActivity activityToBeSaved;
+
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-
-
-
 
         // get the text views that we are going to use for the date and time dialogs
         beginDateTxt= findViewById(R.id.dateToReschedule);
@@ -199,7 +201,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // create the set of constraints
             ConstraintSet constraintSet = new ConstraintSet();
-            ConstraintSet constraintSet2 = new ConstraintSet();
 
 
             // create textViews for uploaded date, uploaded start time, end time and description
@@ -224,98 +225,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 confirmButton.setVisibility(View.VISIBLE);
                 cancelButton.setVisibility(View.VISIBLE);
 
-                // add the text and set some of the attributes
-                uploadDateTextView.setText(beginDateTxt.getText());
-                uploadDateTextView.setTextColor(Color.parseColor("#000000"));
+                // check if the file exists
+                File fileContainingHashMap = new File(FILE_NAME);
 
-                // the time to display from what to what time the activity is
-                String timeFromAndUntilActivity = activityStartTimeTxt.getText() + " - " + activityEndTimeTxt.getText();
-                uploadedStartEndTimeTextView.setText(timeFromAndUntilActivity);
-                uploadedStartEndTimeTextView.setTextColor(Color.parseColor("#000000"));
-
+                // get the start and end times
+                String startTime = activityStartTimeTxt.getText().toString();
+                String endTime = activityEndTimeTxt.getText().toString();
 
                 // get the text from the description of activity
                 String uploadedActivityDescription = activityDescriptionTxt.getText().toString();
-                uploadedDescriptionTextView.setText(uploadedActivityDescription);
-                uploadedDescriptionTextView.setTextColor(Color.parseColor("#000000"));
-                uploadedDescriptionTextView.setPadding(24,0,24,0);
 
+                // create the activity that we may save if user presses confirm button
+                activityToBeSaved = new AnActivity(uploadedActivityDescription, startTime, endTime);
 
+                // the time to display from what to what time the activity is
+                String timeFromAndUntilActivity = startTime + " - " + endTime;
 
-
-
-                // set the ids for all the text views we are going to create
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+                // if file exists
+                if (fileContainingHashMap.isFile() && fileContainingHashMap.canRead())
                 {
-                    uploadedStartEndTimeTextView.setId(generateViewId());
-                    uploadedDescriptionTextView.setId(generateViewId());
-                    uploadDateTextView.setId(generateViewId());
-                    dividerBelowTheActivityDescription.setId(generateViewId());
-
-                    
-
+                    System.out.println("File exists");
                 }
                 else
                 {
 
-                    uploadedStartEndTimeTextView.setId(25);
-                    uploadedDescriptionTextView.setId(23);
-                    uploadDateTextView.setId(21);
-                    dividerBelowTheActivityDescription.setId(27);
+                    // if file does not exist, just display the activity we want to add
+                    createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList(constraintLayoutToHoldActivities, timeFromAndUntilActivity);
                 }
-
-
-
-
-                // add the views to the constraint layout
-                constraintLayoutToHoldActivities.addView(uploadDateTextView);
-                constraintLayoutToHoldActivities.addView(uploadedStartEndTimeTextView);
-                constraintLayoutToHoldActivities.addView(uploadedDescriptionTextView);
-                constraintLayoutToHoldActivities.addView(dividerBelowTheActivityDescription);
-
-
-                ConstraintLayout.LayoutParams layoutParamsForDividerBelowTime =  new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, 3);
-                dividerBelowTheActivityDescription.setLayoutParams(layoutParamsForDividerBelowTime);
-                int[] attrs = { android.R.attr.listDivider };
-                TypedArray ta = getApplicationContext().obtainStyledAttributes(attrs);
-                //Get Drawable and use as needed
-                Drawable divider = ta.getDrawable(0);
-                dividerBelowTheActivityDescription.setBackground(divider);
-                ta.recycle();
-
-                // get the id of the view for the uploaded date
-                int idOfUploadedDateTextView = uploadDateTextView.getId();
-                constraintSet.clone(constraintLayoutToHoldActivities);
-                constraintSet.connect(idOfUploadedDateTextView, ConstraintSet.TOP, R.id.divider, ConstraintSet.TOP, 0 );
-                constraintSet.connect(idOfUploadedDateTextView, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
-                constraintSet.connect(idOfUploadedDateTextView, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
-
-
-                // get the id of the view for the uploaded start to end time
-                int idOfUploadedStartEndTimeTextView = uploadedStartEndTimeTextView.getId();
-                constraintSet.connect(idOfUploadedStartEndTimeTextView, ConstraintSet.TOP, R.id.divider2, ConstraintSet.TOP, 0);
-                constraintSet.connect(idOfUploadedStartEndTimeTextView, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
-                constraintSet.connect(idOfUploadedStartEndTimeTextView, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
-
-                // get the id of the view for the uploaded activity description
-                int idOfUploadedActivityDescription = uploadedDescriptionTextView.getId();
-                // put the top of the activity description at the bottom of the start end time text view
-                constraintSet.connect(idOfUploadedActivityDescription, ConstraintSet.TOP, idOfUploadedStartEndTimeTextView, ConstraintSet.BOTTOM, 0);
-                constraintSet.connect(idOfUploadedActivityDescription, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
-                constraintSet.connect(idOfUploadedActivityDescription, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
-
-                // get the id of the view of the divider and put it under the times
-                int idOfDividerBelowTheTimeActivityDesciption = dividerBelowTheActivityDescription.getId();
-                constraintSet.connect(idOfDividerBelowTheTimeActivityDesciption, ConstraintSet.BOTTOM, idOfUploadedActivityDescription, ConstraintSet.BOTTOM, 0);
-                constraintSet.connect(idOfDividerBelowTheTimeActivityDesciption, ConstraintSet.START,  ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
-                constraintSet.connect(idOfDividerBelowTheTimeActivityDesciption, ConstraintSet.END,  ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
-
-
-                constraintSet.applyTo(constraintLayoutToHoldActivities);
             } // if the entries are all set
 
 
-        } // if upload button is pressed
+        } // if calendar button is pressed
         if (v == calendarButton)
         {
             Intent intent = new Intent(this, DisplayScheduleActivity.class);
@@ -326,7 +266,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         } // calendar button
-
+//        if (v == confirmButton)
+//        {
+//
+//        }
     } // onClick
 
     public void removeViews(ConstraintLayout constraintLayoutWhereViewsWillBeRemovedFrom)
@@ -350,4 +293,106 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     } // removeViews
+
+    // create a method to display the activity if we have no hash map or the date has no activities present
+    // in the array list
+    @SuppressLint("ResourceType")
+    public void createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList (ConstraintLayout constraintLayoutToAddViews, String timeFromAndUntilActivity)
+    {
+
+        // create the set of constraints
+        ConstraintSet constraintSet = new ConstraintSet();
+
+
+        // create textViews for uploaded date, uploaded start time, end time and description
+        // to be put at the display to hold activities
+        TextView uploadedStartEndTimeTextView =  new TextView(this);
+        TextView uploadedDescriptionTextView =  new TextView(this);
+        TextView uploadDateTextView = new TextView(this);
+
+
+        // the divider that will be added to the bottom of the time
+        View dividerBelowTheActivityDescription = new View(this);
+        System.out.println("File does not exist");
+
+        // add the text and set some of the attributes
+        uploadDateTextView.setText(beginDateTxt.getText());
+        uploadDateTextView.setTextColor(Color.parseColor("#000000"));
+
+        // set the text view for the uploaded start and end times
+        uploadedStartEndTimeTextView.setText(timeFromAndUntilActivity);
+        uploadedStartEndTimeTextView.setTextColor(Color.parseColor("#000000"));
+
+        // set the text view for the uploaded activity description text view
+        uploadedDescriptionTextView.setText(activityDescriptionTxt.getText().toString());
+        uploadedDescriptionTextView.setTextColor(Color.parseColor("#000000"));
+        uploadedDescriptionTextView.setPadding(24, 0, 24, 0);
+
+
+        // set the ids for all the text views we are going to create
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            uploadedStartEndTimeTextView.setId(generateViewId());
+            uploadedDescriptionTextView.setId(generateViewId());
+            uploadDateTextView.setId(generateViewId());
+            dividerBelowTheActivityDescription.setId(generateViewId());
+
+        }
+        else {
+
+            uploadedStartEndTimeTextView.setId(25);
+            uploadedDescriptionTextView.setId(23);
+            uploadDateTextView.setId(21);
+            dividerBelowTheActivityDescription.setId(27);
+        }
+
+        // add the views to the constraint layout
+        constraintLayoutToAddViews.addView(uploadDateTextView);
+        constraintLayoutToAddViews.addView(uploadedStartEndTimeTextView);
+        constraintLayoutToAddViews.addView(uploadedDescriptionTextView);
+        constraintLayoutToAddViews.addView(dividerBelowTheActivityDescription);
+
+
+        ConstraintLayout.LayoutParams layoutParamsForDividerBelowTime = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, 3);
+        dividerBelowTheActivityDescription.setLayoutParams(layoutParamsForDividerBelowTime);
+        int[] attrs = {android.R.attr.listDivider};
+        TypedArray ta = getApplicationContext().obtainStyledAttributes(attrs);
+        //Get Drawable and use as needed
+        Drawable divider = ta.getDrawable(0);
+        dividerBelowTheActivityDescription.setBackground(divider);
+        ta.recycle();
+
+        // get the id of the view for the uploaded date
+        int idOfUploadedDateTextView = uploadDateTextView.getId();
+        constraintSet.clone(constraintLayoutToAddViews);
+        constraintSet.connect(idOfUploadedDateTextView, ConstraintSet.TOP, R.id.divider, ConstraintSet.TOP, 0);
+        constraintSet.connect(idOfUploadedDateTextView, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
+        constraintSet.connect(idOfUploadedDateTextView, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+
+
+        // get the id of the view for the uploaded start to end time
+        int idOfUploadedStartEndTimeTextView = uploadedStartEndTimeTextView.getId();
+        constraintSet.connect(idOfUploadedStartEndTimeTextView, ConstraintSet.TOP, R.id.divider2, ConstraintSet.TOP, 0);
+        constraintSet.connect(idOfUploadedStartEndTimeTextView, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
+        constraintSet.connect(idOfUploadedStartEndTimeTextView, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+
+        // get the id of the view for the uploaded activity description
+        int idOfUploadedActivityDescription = uploadedDescriptionTextView.getId();
+        // put the top of the activity description at the bottom of the start end time text view
+        constraintSet.connect(idOfUploadedActivityDescription, ConstraintSet.TOP, idOfUploadedStartEndTimeTextView, ConstraintSet.BOTTOM, 0);
+        constraintSet.connect(idOfUploadedActivityDescription, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
+        constraintSet.connect(idOfUploadedActivityDescription, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+
+        // get the id of the view of the divider and put it under the times
+        int idOfDividerBelowTheTimeActivityDesciption = dividerBelowTheActivityDescription.getId();
+        constraintSet.connect(idOfDividerBelowTheTimeActivityDesciption, ConstraintSet.BOTTOM, idOfUploadedActivityDescription, ConstraintSet.BOTTOM, 0);
+        constraintSet.connect(idOfDividerBelowTheTimeActivityDesciption, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
+        constraintSet.connect(idOfDividerBelowTheTimeActivityDesciption, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+
+
+        constraintSet.applyTo(constraintLayoutToAddViews);
+
+
+
+
+    } // createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList
 }

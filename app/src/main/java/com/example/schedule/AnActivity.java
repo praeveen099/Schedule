@@ -3,6 +3,7 @@ package com.example.schedule;
 public class AnActivity implements Comparable<AnActivity>
 {
 
+
     // the properties of an activity
     private String activityDescription;
     private String startTime;
