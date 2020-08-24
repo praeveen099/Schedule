@@ -31,11 +31,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 
@@ -271,6 +274,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     if(arrayListOfTheDate.isEmpty())
                         createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList(constraintLayoutToHoldActivities, timeFromAndUntilActivity);
                     // TO DO  else
+                    // display all the activities with the added activity in the array list
 
 
 
@@ -281,7 +285,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     // if file does not exist, just display the activity we want to add
                     createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList(constraintLayoutToHoldActivities, timeFromAndUntilActivity);
-                }
+
+                    // the file does not exist, so the hashMap is null
+                    // so we need to create the hashMap
+                    HashMap<String, ArrayList<AnActivity>> hashMapOfDates = new HashMap<>();
+
+                    // add the array list into the hashmap
+                    ArrayList<AnActivity> arrayListToAdd = new ArrayList();
+                    hashMapOfDates.put(dateUploadedText, arrayListToAdd);
+
+                    // save the hashmap
+                    saveHashMap(hashMapOfDates);
+
+
+
+                } // else
             } // if the entries are all set
 
 
@@ -296,10 +314,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         } // calendar button
-//        if (v == confirmButton)
-//        {
-//
-//        }
+        if (v == confirmButton)
+        {
+            // get the hashMap
+            HashMap<String, ArrayList<AnActivity>> hashMapOfDates = loadHashMapFromFile();
+
+            // the date which we want to add the activity to
+            String dateUploadedText = beginDateTxt.getText().toString();
+
+
+            // get the array list of the date
+            // get the array list from the hashMap
+            ArrayList<AnActivity> arrayListOfTheDate;
+            arrayListOfTheDate = hashMapOfDates.get(dateUploadedText);
+
+            // Save the activity into the array list
+            arrayListOfTheDate.add(activityToBeSaved);
+
+            // sort the array list to ascending time
+            Collections.sort(arrayListOfTheDate);
+
+            // then save the hashMap
+            saveHashMap(hashMapOfDates);
+
+
+
+        }
     } // onClick
 
     public void removeViews(ConstraintLayout constraintLayoutWhereViewsWillBeRemovedFrom)
@@ -472,5 +512,49 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         HashMap<String, ArrayList<AnActivity>> hashMapOfActivities = gson.fromJson(toSave, type);
 
         return  hashMapOfActivities;
+    }
+
+    public void saveHashMap(HashMap<String, ArrayList<AnActivity>> hashMapToBeSavedToTextFile)
+    {
+
+        // get the string version of the hashMap
+        Gson gson = new Gson();
+        String jsonStringOfTheHashMap = gson.toJson(hashMapToBeSavedToTextFile);
+
+        // get the file output stream to be used to save the json string
+        FileOutputStream fos = null;
+
+        try
+        {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+
+            // write to the file using the bytes of the string
+            fos.write(jsonStringOfTheHashMap.getBytes());
+
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        // finally we close the file output stream
+        finally
+        {
+            if (fos != null)
+            {
+                try {
+                    fos.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
     }
 }
