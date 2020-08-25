@@ -1,6 +1,8 @@
 package com.example.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +26,10 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
     // the file name  that will store the HashMap of activities
     public static final String FILE_NAME = "schedules.txt";
 
+    private RecyclerView recyclerViewHoldingActivities;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,16 +51,28 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
             // then check if there are activities for that date
             activitiesForTheDate = hashMapOfDates.get(dateOfActivity);
 
+            System.out.println(dateOfActivity + "the date");
+            System.out.println("hash map" + hashMapOfDates);
+            System.out.println(activitiesForTheDate);
+
+
             // the array list is in the hashMap and its not empty
             if (activitiesForTheDate != null && !activitiesForTheDate.isEmpty()){
 
-                // TO DO this with layout manager
-                System.out.println("Todo");
+                // set the recycler view
+                recyclerViewHoldingActivities = findViewById(R.id.recyclerViewToHoldActivitiesInADay);
+                recyclerViewHoldingActivities.setHasFixedSize(true);
+                mLayoutManager = new LinearLayoutManager(this);
+                mAdapter = new ActivityForSpecificDateAdapter(activitiesForTheDate);
+
+                recyclerViewHoldingActivities.setLayoutManager(mLayoutManager);
+                recyclerViewHoldingActivities.setAdapter(mAdapter);
+
+
             }
 
 
         }
-
 
 
 

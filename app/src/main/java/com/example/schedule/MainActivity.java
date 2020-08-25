@@ -115,7 +115,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth)
                         {
-                            beginDateTxt.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            if (monthOfYear >= 10) {
+                                beginDateTxt.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            }
+                            else
+                                beginDateTxt.setText(dayOfMonth + "/" + "0" + (monthOfYear + 1) + "/" + year);
+
                             // set the text area to have text which is black
                             beginDateTxt.setTextColor(Color.parseColor("#000000"));
                         }
@@ -264,8 +269,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // add an entry of the date to the array list
                     if (arrayListOfTheDate == null)
                     {
+                        System.out.println("Date does not exist");
                         ArrayList<AnActivity> arrayListToAdd = new ArrayList();
                         hashMapOfDates.put(dateUploadedText, arrayListToAdd);
+
+                        // save the hashmap
+                        saveHashMap(hashMapOfDates);
 
                         // then reassign the array list of the date
                         arrayListOfTheDate = hashMapOfDates.get(dateUploadedText);
@@ -275,11 +284,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // activities to be added
                     if(arrayListOfTheDate.isEmpty())
                     {
+                        System.out.println("Date does exist but has no entries");
                         createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList(constraintLayoutToHoldActivities, timeFromAndUntilActivity);
                     }
                     // TO DO  else
                     // display all the activities with the added activity in the array list
                     else{
+                        System.out.println("Date does exist but and entries");
+
                         // replace this later on
                         createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList(constraintLayoutToHoldActivities, timeFromAndUntilActivity);
                     }
@@ -335,6 +347,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // get the array list from the hashMap
             ArrayList<AnActivity> arrayListOfTheDate;
             arrayListOfTheDate = hashMapOfDates.get(dateUploadedText);
+
 
             // Save the activity into the array list
             arrayListOfTheDate.add(activityToBeSaved);
