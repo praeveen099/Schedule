@@ -24,8 +24,8 @@ public class ActivityForSpecificDateAdapter  extends RecyclerView.Adapter<Activi
         public ViewHolderForSpecificDate(@NonNull View itemView)
         {
             super(itemView);
-            itemView.findViewById(R.id.DescriptionOfActivity);
-            itemView.findViewById(R.id.Timing);
+            activityDescription = itemView.findViewById(R.id.DescriptionOfActivity);
+            activityTiming = itemView.findViewById(R.id.Timing);
 
         }
     }
@@ -56,11 +56,10 @@ public class ActivityForSpecificDateAdapter  extends RecyclerView.Adapter<Activi
         // fix the reason why holder returns null
         AnActivity currentActivity = activityList.get(position);
 
-        System.out.println(currentActivity.getActivityDescription());
-        System.out.println(holder.activityDescription);
+
         // use get methods to pass information to the views
-        // holder.activityDescription.setText(currentActivity.getActivityDescription());
-        // sholder.activityTiming.setText(currentActivity.getTimeToBeUsedForDisplay());
+        holder.activityDescription.setText(currentActivity.getActivityDescription());
+        holder.activityTiming.setText(currentActivity.getTimeToBeUsedForDisplay());
     }
 
     @Override
