@@ -9,6 +9,8 @@ public class AnActivity implements Comparable<AnActivity>
     private String startTime;
     private String endTime;
 
+    private String timeToBeUsedForDisplay;
+
     // will be used to index in the array list
     private int startEndTimeToBeUsedForIndexing;
 
@@ -18,6 +20,8 @@ public class AnActivity implements Comparable<AnActivity>
         activityDescription = requiredActivityDescription;
         startTime = requiredStartTime;
         endTime = requiredEndTime;
+
+        timeToBeUsedForDisplay = startTime + " - " + endTime;
 
         // create the start end time index
         startEndTimeToBeUsedForIndexing = createTheIndex(startTime, endTime);
@@ -57,6 +61,11 @@ public class AnActivity implements Comparable<AnActivity>
     public String getEndTime() {
         return endTime;
     }
+
+    public String getTimeToBeUsedForDisplay() {
+        return timeToBeUsedForDisplay;
+    }
+
 
     public int getStartEndTimeToBeUsedForIndexing() {
         return startEndTimeToBeUsedForIndexing;

@@ -40,6 +40,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import android.widget.Toast;
 
 
 import static android.view.View.generateViewId;
@@ -233,6 +234,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // check if the file exists
                 File fileContainingHashMap = new File(FILE_NAME);
 
+
                 // get the start and end times
                 String startTime = activityStartTimeTxt.getText().toString();
                 String endTime = activityEndTimeTxt.getText().toString();
@@ -248,10 +250,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 // the time to display from what to what time the activity is
                 String timeFromAndUntilActivity = startTime + " - " + endTime;
 
+
                 // if file exists
-                if (fileContainingHashMap.isFile() && fileContainingHashMap.canRead())
+                if (fileExist(FILE_NAME))
                 {
-                    System.out.println("File exists");
                     // get the hashMap
                     HashMap<String, ArrayList<AnActivity>> hashMapOfDates = loadHashMapFromFile();
 
@@ -272,9 +274,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // if nothing has been added to the array list of that date, then just show the
                     // activities to be added
                     if(arrayListOfTheDate.isEmpty())
+                    {
                         createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList(constraintLayoutToHoldActivities, timeFromAndUntilActivity);
+                    }
                     // TO DO  else
                     // display all the activities with the added activity in the array list
+                    else{
+                        // replace this later on
+                        createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList(constraintLayoutToHoldActivities, timeFromAndUntilActivity);
+                    }
 
 
 
@@ -383,7 +391,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // the divider that will be added to the bottom of the time
         View dividerBelowTheActivityDescription = new View(this);
-        System.out.println("File does not exist");
 
         // add the text and set some of the attributes
         uploadDateTextView.setText(beginDateTxt.getText());
@@ -463,6 +470,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     } // createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList
 
+    public boolean fileExist(String fname){
+        File file = getBaseContext().getFileStreamPath(fname);
+        return file.exists();
+    }
+
     public HashMap<String, ArrayList<AnActivity>> loadHashMapFromFile()
     {
         // initialise the file input stream
@@ -485,7 +497,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             while ((toGetFromFile = br.readLine()) != null) {
                 toSave = toGetFromFile;
                 sb.append(toGetFromFile).append("\n");
-                System.out.println(toGetFromFile);
             }
             br.close();
         }
@@ -531,6 +542,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // write to the file using the bytes of the string
             fos.write(jsonStringOfTheHashMap.getBytes());
 
+
+
         }
         catch (FileNotFoundException e)
         {
@@ -547,6 +560,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             {
                 try {
                     fos.close();
+
                 }
                 catch (IOException e)
                 {
