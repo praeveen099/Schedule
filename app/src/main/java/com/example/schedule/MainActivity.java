@@ -195,19 +195,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
        if(v == cancelButton)
        {
+           // clear the area of the display
+           clearTheDisplayArea();
 
-           @SuppressLint("WrongViewCast")
-           ConstraintLayout constraintLayoutToHoldActivities = findViewById(R.id.constraintLayoutToHoldActivities);
-
-           // set divider and date string and buttons to be invisible
-           cancelButton.setVisibility(View.INVISIBLE);
-           confirmButton.setVisibility(View.INVISIBLE);
-           aboveDateDivider.setVisibility(View.INVISIBLE);
-           belowDateDivider.setVisibility(View.INVISIBLE);
-           stringDate.setVisibility(View.INVISIBLE);
-
-           // remove the views in the constraint layout that we dont want anymore
-           removeViews(constraintLayoutToHoldActivities);
        }
         // when the upload data is pressed show the uploaded data
         if(v == uploadButton)
@@ -357,6 +347,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             // then save the hashMap
             saveHashMap(hashMapOfDates);
+
+            // tell the user the save is made and clear the display area
+            Toast.makeText(this, "Saved your activity to date " + dateUploadedText,
+                    Toast.LENGTH_LONG).show();
+            clearTheDisplayArea();
 
 
 
@@ -583,5 +578,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
+    } // save HashMap
+
+    public void clearTheDisplayArea()
+    {
+
+        @SuppressLint("WrongViewCast")
+        ConstraintLayout constraintLayoutToHoldActivities = findViewById(R.id.constraintLayoutToHoldActivities);
+
+        // set divider and date string and buttons to be invisible
+        cancelButton.setVisibility(View.INVISIBLE);
+        confirmButton.setVisibility(View.INVISIBLE);
+        aboveDateDivider.setVisibility(View.INVISIBLE);
+        belowDateDivider.setVisibility(View.INVISIBLE);
+        stringDate.setVisibility(View.INVISIBLE);
+
+        // remove the views in the constraint layout that we dont want anymore
+        removeViews(constraintLayoutToHoldActivities);
     }
 }

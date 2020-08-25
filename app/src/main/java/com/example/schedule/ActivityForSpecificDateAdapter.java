@@ -32,16 +32,14 @@ public class ActivityForSpecificDateAdapter  extends RecyclerView.Adapter<Activi
 
     // constructor for the adapter, will contain the array list we want to display
     public ActivityForSpecificDateAdapter(ArrayList<AnActivity> requiredActivityList){
-
         // pass the example list from constructor to the activity list instance variable
         activityList = requiredActivityList;
-        System.out.println("the activity" + activityList);
     }
 
     @NonNull
     @Override
     public ViewHolderForSpecificDate onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // may need to fix this
+
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_item, parent, false);
         ViewHolderForSpecificDate viewHolder = new ViewHolderForSpecificDate(v);
         System.out.println(viewHolder + "The view holder");
@@ -52,10 +50,7 @@ public class ActivityForSpecificDateAdapter  extends RecyclerView.Adapter<Activi
     @Override
     public void onBindViewHolder(@NonNull ViewHolderForSpecificDate holder, int position)
     {
-        // TO DO
-        // fix the reason why holder returns null
         AnActivity currentActivity = activityList.get(position);
-
 
         // use get methods to pass information to the views
         holder.activityDescription.setText(currentActivity.getActivityDescription());
