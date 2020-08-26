@@ -39,6 +39,16 @@
             android:text="@string/line_2"
             android:textSize="15sp" />
 
+        <ImageView
+            android:id="@+id/image_delete"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/delete_the_activity"
+            android:src="@drawable/ic_delete" />
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

@@ -18,5 +18,6 @@
     <string name="line_1">Line 1</string>
     <string name="line_2">Line 2</string>
     <string name="calendar">Calendar</string>
+    <string name="delete_the_activity">Delete The Activity</string>
 
 </resources>

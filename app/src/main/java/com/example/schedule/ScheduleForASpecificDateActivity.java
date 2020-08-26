@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
@@ -27,8 +28,11 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
     public static final String FILE_NAME = "schedules.txt";
 
     private RecyclerView recyclerViewHoldingActivities;
-    private RecyclerView.Adapter mAdapter;
+    private ActivityForSpecificDateAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private ArrayList<AnActivity> activitiesForTheDate;
+    private HashMap<String, ArrayList<AnActivity>> hashMapOfDates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,44 +43,24 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String dateOfActivity = intent.getStringExtra(DisplayScheduleActivity.EXTRA_MESSAGE);
 
-        ArrayList<AnActivity> activitiesForTheDate = new ArrayList<>();
+        activitiesForTheDate = new ArrayList<>();
 
         // if file exists
         if (fileExist(FILE_NAME))
         {
-
             // get the hashMap
-            HashMap<String, ArrayList<AnActivity>> hashMapOfDates = loadHashMapFromFile();
+            hashMapOfDates = loadHashMapFromFile();
 
             // then check if there are activities for that date
             activitiesForTheDate = hashMapOfDates.get(dateOfActivity);
 
-            System.out.println(dateOfActivity + "the date");
-            System.out.println("hash map" + hashMapOfDates);
-            System.out.println(activitiesForTheDate);
-
 
             // the array list is in the hashMap and its not empty
             if (activitiesForTheDate != null && !activitiesForTheDate.isEmpty()){
-
-                // set the recycler view
-                recyclerViewHoldingActivities = findViewById(R.id.recyclerViewToHoldActivitiesInADay);
-                recyclerViewHoldingActivities.setHasFixedSize(true);
-                mLayoutManager = new LinearLayoutManager(this);
-                mAdapter = new ActivityForSpecificDateAdapter(activitiesForTheDate);
-
-                recyclerViewHoldingActivities.setLayoutManager(mLayoutManager);
-                recyclerViewHoldingActivities.setAdapter(mAdapter);
-
-
-            }
-
+                buildRecyclerView();
+            } // if
 
         }
-
-
-
-
 
     }
 
@@ -86,6 +70,39 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
         File file = getBaseContext().getFileStreamPath(fname);
         return file.exists();
     }
+
+    // build the recycler view
+    private void buildRecyclerView()
+    {
+        // set the recycler view
+        recyclerViewHoldingActivities = findViewById(R.id.recyclerViewToHoldActivitiesInADay);
+        recyclerViewHoldingActivities.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mAdapter = new ActivityForSpecificDateAdapter(activitiesForTheDate);
+
+        recyclerViewHoldingActivities.setLayoutManager(mLayoutManager);
+        recyclerViewHoldingActivities.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new ActivityForSpecificDateAdapter.OnItemClickListener() {
+            @Override
+            public void onDeleteClick(int position) {
+                removeItem(position);
+            }
+        });
+
+    }
+
+    public void removeItem(int position)
+    {
+        // remove the item from the array list of activities
+        activitiesForTheDate.remove(position);
+
+        // then save to hashMap the changes
+        saveHashMap(hashMapOfDates);
+
+        mAdapter.notifyItemRemoved(position);
+    }
+
 
     public HashMap<String, ArrayList<AnActivity>> loadHashMapFromFile()
     {
@@ -135,5 +152,52 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
         HashMap<String, ArrayList<AnActivity>> hashMapOfActivities = gson.fromJson(toSave, type);
 
         return  hashMapOfActivities;
-    }
+    } // loadHashMapFromFile()
+
+    public void saveHashMap(HashMap<String, ArrayList<AnActivity>> hashMapToBeSavedToTextFile)
+    {
+
+        // get the string version of the hashMap
+        Gson gson = new Gson();
+        String jsonStringOfTheHashMap = gson.toJson(hashMapToBeSavedToTextFile);
+
+        // get the file output stream to be used to save the json string
+        FileOutputStream fos = null;
+
+        try
+        {
+            fos = openFileOutput(FILE_NAME, MODE_PRIVATE);
+
+            // write to the file using the bytes of the string
+            fos.write(jsonStringOfTheHashMap.getBytes());
+
+
+
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        // finally we close the file output stream
+        finally
+        {
+            if (fos != null)
+            {
+                try {
+                    fos.close();
+
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+    } // save HashMap
 }
