@@ -202,34 +202,34 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
-        android:text="@string/confirm"
-        android:visibility="invisible"
         android:clickable="true"
         android:focusable="true"
         android:onClick="onClick"
+        android:text="@string/confirm"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.888"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollViewToHoldActivities"
-        app:layout_constraintVertical_bias="0.428" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="80dp"
-        android:text="@android:string/cancel"
-        android:visibility="invisible"
         android:clickable="true"
         android:focusable="true"
         android:onClick="onClick"
+        android:text="@android:string/cancel"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/confirmButton"
-        app:layout_constraintHorizontal_bias="0.869"
+        app:layout_constraintHorizontal_bias="0.849"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scrollViewToHoldActivities"
-        app:layout_constraintVertical_bias="0.428"/>
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
