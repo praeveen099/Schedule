@@ -41,7 +41,11 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
-        String dateOfActivity = intent.getStringExtra(DisplayScheduleActivity.EXTRA_MESSAGE);
+        String dateOfActivity = intent.getStringExtra(DisplayScheduleActivity.EXTRA_MESSAGE_DATE);
+        String dayOfActivity = intent.getStringExtra(DisplayScheduleActivity.EXTRA_MESSAGE_DAY);
+        // set the title to be the date and day
+        System.out.println(dayOfActivity);
+        setTitle(dayOfActivity + ", " + dateOfActivity);
 
         activitiesForTheDate = new ArrayList<>();
 

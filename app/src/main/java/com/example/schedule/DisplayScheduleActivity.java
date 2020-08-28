@@ -27,7 +27,8 @@ public class DisplayScheduleActivity extends AppCompatActivity {
     ArrayList<DayAndDate> listOfDayAndDate = new ArrayList<>();
 
     // key to the message that we will receive in the new activity
-    public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+    public static final String EXTRA_MESSAGE_DATE = "com.example.myfirstapp.MESSAGE.DATE";
+    public static final String EXTRA_MESSAGE_DAY = "com.example.myfirstapp.MESSAGE.DAY";
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -98,11 +99,12 @@ public class DisplayScheduleActivity extends AppCompatActivity {
     }
 
     // create a new activity with the schedule from this day
-    public void createAScheduleForSpecificDate(String date)
+    public void createAScheduleForSpecificDate(String date, String day)
     {
         Intent intent = new Intent(this, ScheduleForASpecificDateActivity.class);
         // pass the date string
-        intent.putExtra(EXTRA_MESSAGE, date);
+        intent.putExtra(EXTRA_MESSAGE_DATE, date);
+        intent.putExtra(EXTRA_MESSAGE_DAY, day);
         startActivity(intent);
 
     }
@@ -127,7 +129,8 @@ public class DisplayScheduleActivity extends AppCompatActivity {
             {
 
                 String dateOfClickedCard = listOfDayAndDate.get(position).getDateFromTextView();
-                createAScheduleForSpecificDate(dateOfClickedCard);
+                String dayOfClickedCard = listOfDayAndDate.get(position).getDayFromTextView();
+                createAScheduleForSpecificDate(dateOfClickedCard, dayOfClickedCard);
 
 
             }
