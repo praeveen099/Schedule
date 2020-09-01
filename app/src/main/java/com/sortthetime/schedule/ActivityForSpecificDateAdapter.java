@@ -1,4 +1,4 @@
-package com.example.schedule;
+package com.sortthetime.schedule;
 
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.example.schedule;
+package com.sortthetime.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -44,8 +43,8 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
         String dateOfActivity = intent.getStringExtra(DisplayScheduleActivity.EXTRA_MESSAGE_DATE);
         String dayOfActivity = intent.getStringExtra(DisplayScheduleActivity.EXTRA_MESSAGE_DAY);
         // set the title to be the date and day
-        System.out.println(dayOfActivity);
         setTitle(dayOfActivity + ", " + dateOfActivity);
+
 
         activitiesForTheDate = new ArrayList<>();
 
@@ -62,6 +61,7 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
             // the array list is in the hashMap and its not empty
             if (activitiesForTheDate != null && !activitiesForTheDate.isEmpty()){
                 buildRecyclerView();
+                System.out.println("Activities for the date");
             } // if
 
         }

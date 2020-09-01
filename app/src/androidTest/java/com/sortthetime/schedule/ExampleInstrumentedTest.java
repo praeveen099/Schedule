@@ -1,4 +1,4 @@
-package com.example.schedule;
+package com.sortthetime.schedule;
 
 import android.content.Context;
 

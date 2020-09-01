@@ -1,4 +1,4 @@
-package com.example.schedule;
+package com.sortthetime.schedule;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;

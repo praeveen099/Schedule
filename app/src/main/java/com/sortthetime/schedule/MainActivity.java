@@ -1,11 +1,10 @@
-package com.example.schedule;
+package com.sortthetime.schedule;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -19,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -35,13 +33,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 
 import android.widget.Toast;
 
@@ -50,7 +45,6 @@ import static android.view.View.generateViewId;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
-    // public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
 
     // the file name  that will store the HashMap of activities
     public static final String FILE_NAME = "schedules.txt";
@@ -118,11 +112,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void onDateSet(DatePicker view, int year,
                                               int monthOfYear, int dayOfMonth)
                         {
-                            if (monthOfYear >= 10) {
+                            if (monthOfYear >= 10 && dayOfMonth >= 10) {
                                 beginDateTxt.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
                             }
-                            else
+                            else if (monthOfYear < 10 && dayOfMonth >=10)
                                 beginDateTxt.setText(dayOfMonth + "/" + "0" + (monthOfYear + 1) + "/" + year);
+                            else if (dayOfMonth <10 && monthOfYear >=10)
+                                beginDateTxt.setText("0" + dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
+                            else if (dayOfMonth <10 && monthOfYear < 10)
+                                beginDateTxt.setText("0" + dayOfMonth + "/" + "0" + (monthOfYear + 1) + "/" + year);
+
 
                             // set the text area to have text which is black
                             beginDateTxt.setTextColor(Color.parseColor("#000000"));
@@ -262,7 +261,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // add an entry of the date to the array list
                     if (arrayListOfTheDate == null)
                     {
-                        System.out.println("Date does not exist");
                         ArrayList<AnActivity> arrayListToAdd = new ArrayList();
                         hashMapOfDates.put(dateUploadedText, arrayListToAdd);
 
@@ -277,13 +275,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     // activities to be added
                     if(arrayListOfTheDate.isEmpty())
                     {
-                        System.out.println("Date does exist but has no entries");
                         createViewsAfterUploadIfHashMapNotExistOrNoValuesInArrayList(constraintLayoutToHoldActivities, timeFromAndUntilActivity);
                     }
                     // display all the activities with the added activity in the array list
 
                     else{
-                        System.out.println("Date does exist and has entries");
 
                         displayActivitiesBeforeUpload(constraintLayoutToHoldActivities, arrayListOfTheDate);
 
@@ -452,7 +448,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dividerBelowTheActivityDescription.setId((int) System.currentTimeMillis());
             }
 
-            System.out.println("Hey");
 
             // add the views and the divider to the constraint layout
             constraintLayoutToAddViews.addView(uploadedStartEndTimeTextView);

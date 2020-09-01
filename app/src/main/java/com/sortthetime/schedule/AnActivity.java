@@ -1,4 +1,4 @@
-package com.example.schedule;
+package com.sortthetime.schedule;
 
 public class AnActivity implements Comparable<AnActivity>
 {
