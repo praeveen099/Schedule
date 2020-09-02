@@ -61,7 +61,6 @@ public class ScheduleForASpecificDateActivity extends AppCompatActivity {
             // the array list is in the hashMap and its not empty
             if (activitiesForTheDate != null && !activitiesForTheDate.isEmpty()){
                 buildRecyclerView();
-                System.out.println("Activities for the date");
             } // if
 
         }

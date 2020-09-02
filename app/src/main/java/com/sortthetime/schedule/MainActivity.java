@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -435,7 +436,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // set the text view for the uploaded activity description text view
             uploadedDescriptionTextView.setText(activityFromTheCopy.getActivityDescription());
             uploadedDescriptionTextView.setTextColor(Color.parseColor("#000000"));
-            uploadedDescriptionTextView.setPadding(24, 0, 24, 0);
 
             // set the ids for all the text views we are going to create and the divider
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
@@ -453,6 +453,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             constraintLayoutToAddViews.addView(uploadedStartEndTimeTextView);
             constraintLayoutToAddViews.addView(uploadedDescriptionTextView);
             constraintLayoutToAddViews.addView(dividerBelowTheActivityDescription);
+
+            // prevent the activity description from flowing out of screen
+            ConstraintLayout.LayoutParams layoutParamsForActivityDescription = new ConstraintLayout.LayoutParams(0, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+            layoutParamsForActivityDescription.matchConstraintPercentWidth = (float) 0.8;
+            uploadedDescriptionTextView.setLayoutParams(layoutParamsForActivityDescription);
 
             ConstraintLayout.LayoutParams layoutParamsForDividerBelowTime = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, 3);
             dividerBelowTheActivityDescription.setLayoutParams(layoutParamsForDividerBelowTime);
@@ -477,6 +482,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             constraintSet.connect(idOfUploadedActivityDescription, ConstraintSet.TOP, idOfUploadedStartEndTimeTextView, ConstraintSet.BOTTOM, 0);
             constraintSet.connect(idOfUploadedActivityDescription, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0);
             constraintSet.connect(idOfUploadedActivityDescription, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END, 0);
+
 
             // get the id of the view of the divider and put it under the times
             int idOfDividerBelowTheTimeActivityDesciption = dividerBelowTheActivityDescription.getId();
@@ -553,7 +559,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // set the text view for the uploaded activity description text view
         uploadedDescriptionTextView.setText(activityDescriptionTxt.getText().toString());
         uploadedDescriptionTextView.setTextColor(Color.parseColor("#000000"));
-        uploadedDescriptionTextView.setPadding(24, 0, 24, 0);
 
 
         // set the ids for all the text views we are going to create
@@ -577,6 +582,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         constraintLayoutToAddViews.addView(uploadedStartEndTimeTextView);
         constraintLayoutToAddViews.addView(uploadedDescriptionTextView);
         constraintLayoutToAddViews.addView(dividerBelowTheActivityDescription);
+
+        // prevent the activity description from flowing out of screen
+        ConstraintLayout.LayoutParams layoutParamsForActivityDescription = new ConstraintLayout.LayoutParams(0, ConstraintLayout.LayoutParams.WRAP_CONTENT);
+        layoutParamsForActivityDescription.matchConstraintPercentWidth = (float) 0.8;
+        uploadedDescriptionTextView.setLayoutParams(layoutParamsForActivityDescription);
 
 
         ConstraintLayout.LayoutParams layoutParamsForDividerBelowTime = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, 3);

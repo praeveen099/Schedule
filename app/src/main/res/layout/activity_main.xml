@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/Date"
@@ -15,8 +17,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/activity_description"
-        android:textSize="14sp"
         android:textColor="#000000"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/Day" />
 
@@ -81,8 +83,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/activity_start_time"
-        android:textSize="14sp"
         android:textColor="#000000"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -94,8 +96,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:text="@string/activity_end_time"
-        android:textSize="14sp"
         android:textColor="#000000"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -130,24 +132,23 @@
         android:id="@+id/calendarButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/calendar"
         android:onClick="onClick"
+        android:text="@string/calendar"
         app:layout_constraintBottom_toBottomOf="@+id/uploadButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.28"
         app:layout_constraintStart_toEndOf="@+id/uploadButton" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/ScrollView01"
         android:layout_width="200dp"
         android:layout_height="138dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
         android:layout_marginEnd="40dp"
         android:layout_marginRight="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/Date"
-        app:layout_constraintTop_toBottomOf="@+id/activityEndTime">
+        app:layout_constraintTop_toBottomOf="@+id/activityEndTime"
+        tools:ignore="MissingClass">
 
         <EditText
             android:id="@+id/activityDescription"
@@ -158,17 +159,15 @@
             android:inputType="textMultiLine"
             android:textSize="14sp" />
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollViewToHoldActivities"
-        android:layout_width="409dp"
-        android:layout_height="282dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="408dp"
+        android:layout_height="191dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.766">
+        app:layout_constraintTop_toBottomOf="@+id/uploadButton">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constraintLayoutToHoldActivities"
@@ -179,11 +178,11 @@
                 android:id="@+id/stringDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
                 android:text="@string/date"
                 android:textColor="#000000"
                 android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="@+id/divider"
+                app:layout_constraintHorizontal_bias="0.10"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -209,13 +208,12 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <Button
         android:id="@+id/confirmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="onClick"
@@ -232,7 +230,6 @@
         android:id="@+id/cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="80dp"
         android:clickable="true"
         android:focusable="true"
         android:onClick="onClick"
@@ -247,3 +244,4 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

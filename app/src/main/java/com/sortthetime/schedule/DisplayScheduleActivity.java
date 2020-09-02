@@ -40,7 +40,7 @@ public class DisplayScheduleActivity extends AppCompatActivity {
 
         // Get the Intent that started this activity and extract the string
         Intent intent = getIntent();
-        // String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+
 
 
         createListOfDayAndDate();
